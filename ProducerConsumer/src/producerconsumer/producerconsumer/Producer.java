@@ -8,6 +8,9 @@ import java.util.logging.Logger;
 public class Producer extends Thread {
     Buffer buffer;
     
+    //booleano para correr el run
+    boolean activo;
+    
     Producer(Buffer buffer) {
         this.buffer = buffer;
     }
@@ -19,7 +22,7 @@ public class Producer extends Thread {
         Random r = new Random(System.currentTimeMillis());
         char product;
         
-        for(int i=0 ; i<5 ; i++) {
+        while(this.activo) {
             product = products.charAt(r.nextInt(5));
             this.buffer.produce(product);
             //System.out.println("Producer produced: " + product);
@@ -31,6 +34,12 @@ public class Producer extends Thread {
                 Logger.getLogger(Producer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+    
+    
+    //detiene el thread
+    public void kill(){
+        this.activo = false;
     }
     
 }
