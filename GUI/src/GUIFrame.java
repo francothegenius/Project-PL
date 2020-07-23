@@ -298,4 +298,61 @@ public class GUIFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
     // End of variables declaration//GEN-END:variables
+
+
+
+     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        int esperaProduct = 0;
+        int esperaCons = 0;
+        int bufferTam = 0;
+
+        try {
+        
+            esperaProduct = Integer.parseInt(this.jTextField1.getText().toString());
+            if(esperaProduct > 0 && esperaProduct <= 10000){
+            }else{
+                JOptionPane.showMessageDialog(jTabbedPane1,
+                    "El tiempo de espera del productor debe ser un valor entre 0 y 10000",
+                    "Error!",
+                    JOptionPane.WARNING_MESSAGE);
+                this.flag=true;
+                return;
+            }
+            
+        }
+        catch(Exception e) {
+            JOptionPane.showMessageDialog(jTabbedPane1,
+                    "El valor de tiempo de espera del productor debe de ser de tipo entero",
+                    "Error!",
+                    JOptionPane.WARNING_MESSAGE);
+            this.flag=true;
+            return;
+        }
+
+
+
+         //producers
+        int nProd = Integer.parseInt(this.jSpinner1.getValue().toString());
+        
+        
+        //consumers
+        int nCons = Integer.parseInt(this.jSpinner2.getValue().toString());
+        
+        // Validar datos 
+        if(nProd > 0 && nCons > 0 && bufferSize > 0){
+              //Inicializar clase productor consumidor
+              //lo que hizo Esau
+        }
+        
+
+        //matar proceso
+        private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        //agregar detener
+            
+        }   
+        
+        
+        
 }
