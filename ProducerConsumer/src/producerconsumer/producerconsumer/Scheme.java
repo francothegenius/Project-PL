@@ -1,32 +1,28 @@
 package producerconsumer;
 
+import java.util.Random;
+
 public class Scheme {
     
     public int ID;
     public String operation;
     public int result;
-    public boolean status;
     public int counter = 0;      // Helps as an aux to assign a consecutive number to ID
 
 
     public Scheme () {
 
-        this.counter = counter + 1;
-        this.ID = counter;
-        this.operation = null;
+        this.ID = genID();
+        this.operation = genExp();
         this.result = -1;
     }
 
-
     // This function will receive an Scheme Obj, evaluate it and return it. 
-    public Scheme evaluateOP(Scheme obj){
+    public static Scheme evaluateOP(Scheme obj){
 
-        int result;
-
-        System.out.println("ID ->   " + obj.getID());
-        System.out.println("Operation ->    " + obj.getOperation());
+    int result;
         
-        if(syntaxOP(obj.getOperation())){
+       if(syntaxOP(obj.getOperation())){
 
             char[] ch;
             ch = stringToChar(obj.getOperation());
@@ -61,16 +57,15 @@ public class Scheme {
             }
         }
         else{
-            System.out.println("Invalid Operation: ID " + this.ID);
+            System.out.println("Invalid Operation: ID " + obj.getID());
             return null;
         }
-
         return obj;
     }
 
     /* AUXILIAR METHODS */
 
-    public boolean syntaxOP(String str){
+    public static boolean syntaxOP(String str){
 
         // state 1
         if(str.charAt(0) == 40){
@@ -94,7 +89,7 @@ public class Scheme {
         return false;
     }
 
-    public char[] stringToChar(String str){
+    public static char[] stringToChar(String str){
 
         char [] ch = new char[str.length()];
 
@@ -105,12 +100,53 @@ public class Scheme {
         return ch;
     } 
 
-    public void print(Scheme obj){
+    public static String genExp(){
 
+        String a, b, sym;
+
+        a = Integer.toString(getRandomNumber(0, 10));
+        b = Integer.toString(getRandomNumber(0, 10));
+        sym = Integer.toString(getRandomNumber(0, 4));
+
+        switch (Integer.parseInt(sym)){
+
+            case 0:
+                sym = "+";
+                break;
+            
+            case 1:
+                sym = "-";
+                break;
+            
+            case 2:
+                sym = "*";
+                break;
+            
+            case 3:
+                sym = "/";
+                break;
+            
+            default: 
+                break;
+        }
+
+
+        String str = "(" + sym + a + b + ")";
+        return str;
 
     }
 
+    public static int getRandomNumber(int min, int max){
+        Random rand = new Random();
+        return rand.nextInt(max - min) + min;
+    }
 
+    public int genID (){
+
+        counter = getRandomNumber(0, 1000);
+        return counter;
+
+    }
 
     /* GETTERS & SETTERS */
 
