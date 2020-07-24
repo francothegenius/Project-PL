@@ -38,7 +38,7 @@ public class Producer extends Thread {
     
     
     //detiene el thread
-    public void kill(){
+    public void stopThread(){
         this.activo = false;
     }
     

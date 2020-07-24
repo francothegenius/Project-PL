@@ -7,7 +7,9 @@ public class Scheme {
     public int ID;
     public String operation;
     public int result;
-    public int counter = 0;      // Helps as an aux to assign a consecutive number to ID
+    public int counter = 0;                 
+    static Random rand = new Random();
+
 
 
     public Scheme () {
@@ -137,7 +139,6 @@ public class Scheme {
     }
 
     public static int getRandomNumber(int min, int max){
-        Random rand = new Random();
         return rand.nextInt(max - min) + min;
     }
 

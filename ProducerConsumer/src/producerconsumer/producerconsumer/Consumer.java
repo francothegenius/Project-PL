@@ -30,7 +30,7 @@ public class Consumer extends Thread {
         }
     }
     
-    public void kill(){
+    public void stopThread(){
         this.activo = false;
     }
 }
