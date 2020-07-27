@@ -106,8 +106,8 @@ public class Scheme {
 
         String a, b, sym;
 
-        a = Integer.toString(getRandomNumber(0, 10));
-        b = Integer.toString(getRandomNumber(0, 10));
+        a = Integer.toString(getRandomNumber(1, 10));
+        b = Integer.toString(getRandomNumber(1, 10));
         sym = Integer.toString(getRandomNumber(0, 4));
 
         switch (Integer.parseInt(sym)){
