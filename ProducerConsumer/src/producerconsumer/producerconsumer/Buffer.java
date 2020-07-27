@@ -6,33 +6,39 @@ import java.util.logging.Logger;
 
 public class Buffer {
     
-    private char buffer;
+    private Scheme buffer;
+    public int bufferSize;
+    public int bufferTime;
     
-    Buffer() {
-        this.buffer = 0;
+    Buffer(int size, int time) {
+        this.buffer = new Scheme();      
+        this.bufferSize = size;
+        this.bufferTime = time;
     }
+
+
     
-    synchronized char consume() {
-        char product = 0;
+    synchronized Scheme consume() {
+        Scheme product = null;
         
-        if(this.buffer == 0) {
+        if(this.buffer == null) {
             try {
-                wait(1000);
+                wait(this.bufferTime);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Buffer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         product = this.buffer;
-        this.buffer = 0;
+        this.buffer = null;
         notify();
         
         return product;
     }
     
-    synchronized void produce(char product) {
-        if(this.buffer != 0) {
+    synchronized void produce(Scheme product) {
+        if(this.buffer != null) {
             try {
-                wait(1000);
+                wait(this.bufferTime);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Buffer.class.getName()).log(Level.SEVERE, null, ex);
             }
