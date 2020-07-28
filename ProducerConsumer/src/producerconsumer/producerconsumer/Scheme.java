@@ -1,12 +1,14 @@
 package producerconsumer;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.Random;
 
 public class Scheme {
     
     public int ID;
     public String operation;
-    public int result;
+    public double result;
     public int counter = 0;                 
     static Random rand = new Random();
 
@@ -14,8 +16,8 @@ public class Scheme {
 
     public Scheme () {
 
-        this.ID = genID();
-        this.operation = genExp();
+        this.ID = 0;
+        this.operation = null;
         this.result = -1;
     }
 
@@ -32,6 +34,11 @@ public class Scheme {
             int a = Character.getNumericValue(ch[2]);
             int b = Character.getNumericValue(ch[3]);
 
+            if ( b == 0 && ch[1] == 47){
+                    obj.setResult(Double.NaN);
+                    return obj;                    
+            }
+            
             switch(ch[1]){
 
                 case 42 :
@@ -102,12 +109,12 @@ public class Scheme {
         return ch;
     } 
 
-    public static String genExp(){
+    public String genExp(int min, int max){
 
         String a, b, sym;
 
-        a = Integer.toString(getRandomNumber(1, 10));
-        b = Integer.toString(getRandomNumber(1, 10));
+        a = Integer.toString(getRandomNumber(min, max+1));
+        b = Integer.toString(getRandomNumber(min, max+1));
         sym = Integer.toString(getRandomNumber(0, 4));
 
         switch (Integer.parseInt(sym)){
@@ -167,11 +174,11 @@ public class Scheme {
         this.operation = operation;
     }
 
-    public int getResult() {
+    public double getResult() {
         return result;
     }
 
-    public void setResult(int result) {
+    public void setResult(double result) {
         this.result = result;
     }
 

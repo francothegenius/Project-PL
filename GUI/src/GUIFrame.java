@@ -1,3 +1,5 @@
+import producerconsumer.ProducerConsumer;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -16,6 +18,22 @@ public class GUIFrame extends javax.swing.JFrame {
     public GUIFrame() {
         initComponents();
     }
+
+    int nProducers = 0;
+    //campo consumidores
+    int nConsumers = 0;
+    //ms productores
+    int msProducers = 0;
+    //ms consumidores
+    int msConsumers = 0;
+    //buffer size
+    int bufferSize = 0;
+    //rangos
+    int lowRange = 0;
+    int highRange = 0;
+
+    ProducerConsumer data;
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -292,21 +310,23 @@ public class GUIFrame extends javax.swing.JFrame {
     private void buttonStartMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonStartMouseClicked
         // TODO add your handling code here:
         
-        feedback1.setText("");
-        //campo productores
-        int nProducers = 0;
-        //campo consumidores
-        int nConsumers = 0;
-        //ms productores
-        int msProducers = 0;
-        //ms consumidores
-        int msConsumers = 0;
-        //buffer size
-        int bufferSize = 0;
-        //rangos
-        int lowRange = 0;
-        int highRange = 0;
         
+        feedback1.setText("");
+        /*
+        //campo productores
+        nProducers = 0;
+        //campo consumidores
+        nConsumers = 0;
+        //ms productores
+        msProducers = 0;
+        //ms consumidores
+        msConsumers = 0;
+        //buffer size
+        bufferSize = 0;
+        //rangos
+        lowRange = 0;
+        highRange = 0;
+        */
         
         
         //validacion productores
@@ -428,6 +448,10 @@ public class GUIFrame extends javax.swing.JFrame {
             feedback.setText("El valor del rango mayor debe ser mas grande que el menor ");
             return;
         }
+
+        data = new ProducerConsumer(nProducers, nConsumers);
+        data.bigStart(bufferSize, 1000, lowRange, highRange);
+
         
         //deshabilitar boton start
         buttonStart.setEnabled(false);
@@ -458,6 +482,8 @@ public class GUIFrame extends javax.swing.JFrame {
         bufferSizeField.setValue((Integer) 0);
         menorRangoInput.setValue((Integer) 0);
         mayorRangoInput.setValue((Integer) 0);
+
+        data.stopAllThreads();
         
     }//GEN-LAST:event_buttonStopMouseClicked
 

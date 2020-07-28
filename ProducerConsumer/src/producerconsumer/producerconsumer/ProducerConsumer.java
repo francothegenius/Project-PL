@@ -3,27 +3,49 @@ package producerconsumer;
 
 public class ProducerConsumer {
 
-    public static void main(String[] args) {
-        
-        bigStart(2, 4, 20, 1000);
+    public Producer productores  [];
+    public Consumer consumidores [];
+    public Buffer buffer;
 
+
+    public ProducerConsumer (int sizeProd, int sizeCons) {
+        
+        this.productores = new Producer [sizeProd];
+        this.consumidores = new Consumer [sizeCons];
     }
 
-    public static void bigStart(int productores, int consumidores, int bufferSize, int bufferTime){
+    /*public static void main(String[] args) {
+        
+        //  @params < # productores, # consumidores, tamaño de buffer, tiempo de buffer, rango de operaciones, rango min, rango max>
+            bigStart(1, 1, 10, 1000, 0, 9);
+        
+    }*/
 
-        Producer [] producers = new Producer [productores];
-        Consumer [] consumers = new Consumer [consumidores];
+    public void bigStart( int bufferSize, int bufferTime, int min, int max){
+
         Buffer buffer = new Buffer(bufferSize, bufferTime);
 
-        for (int i = 0; i < producers.length; i++) {
-            producers [i] = new Producer(buffer);
-            producers [i].start();
+        for (int i = 0; i < this.productores.length; i++) {
+            this.productores [i] = new Producer(buffer, min, max);
+            this.productores [i].start();
         }
 
-        for (int j = 0; j < consumers.length; j++) {
-            consumers [j] = new Consumer(buffer);
-            consumers [j].start();
+        for (int j = 0; j < this.consumidores.length; j++) {
+            this.consumidores [j] = new Consumer(buffer);
+            this.consumidores [j].start();
         }
+    }
+
+    public void stopAllThreads (){
+
+        for (int i = 0; i < this.productores.length; i++) {
+            this.productores [i].stopThread();;
+        }
+
+        for (int j = 0; j < this.consumidores.length; j++) {
+            this.consumidores [j].stopThread();
+        }
+
     }
     
 }
