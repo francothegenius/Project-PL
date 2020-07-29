@@ -1,4 +1,8 @@
-import producerconsumer.ProducerConsumer;
+package producerconsumer;
+
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JOptionPane;
+import javax.swing.JProgressBar;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -33,7 +37,6 @@ public class GUIFrame extends javax.swing.JFrame {
     int highRange = 0;
 
     ProducerConsumer data;
-
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -189,35 +192,46 @@ public class GUIFrame extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Product"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "ID", "Expression", "Result"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+
         jScrollPane2.setViewportView(jTable2);
 
         jLabel7.setText("Tareas por hacer");
 
         jLabel8.setText("Tareas realizadas");
 
-        jProgressBar1.setValue(50);
+        //jProgressBar1.setValue(20);
+
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -326,8 +340,7 @@ public class GUIFrame extends javax.swing.JFrame {
         //rangos
         lowRange = 0;
         highRange = 0;
-        */
-        
+        */        
         
         //validacion productores
         try{
@@ -450,13 +463,18 @@ public class GUIFrame extends javax.swing.JFrame {
         }
 
         data = new ProducerConsumer(nProducers, nConsumers);
-        data.bigStart(bufferSize, 1000, lowRange, highRange);
+        data.bigStart(bufferSize, 1000, lowRange, highRange, jProgressBar1, jSpinner4);
 
         
         //deshabilitar boton start
         buttonStart.setEnabled(false);
         //habilitar boton stop
         buttonStop.setEnabled(true);
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(new Object[][] {}, new String[] {"ID", "Operación"}));
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(new Object[][] {}, new String[] {"ID", "OP", "Res"}));
+
+
         feedback.setText("");
         feedback1.setText("PROCESO INICIALIZADO!");
         System.out.println("Numero de productores: "+ nProducers);
@@ -474,7 +492,9 @@ public class GUIFrame extends javax.swing.JFrame {
         buttonStart.setEnabled(true);
         //habilitar boton stop
         buttonStop.setEnabled(false);
-        feedback1.setText("PROCESO DETENIDO!");
+        data.stopAllThreads();
+        feedback1.setText("");
+        JOptionPane.showMessageDialog(this, "El proceso se ha detenido exitosamente");
         nProducersField.setValue((Integer) 0);
         nConsumersField.setValue((Integer) 0);
         msConsumersField.setValue((Integer) 0);
@@ -483,18 +503,54 @@ public class GUIFrame extends javax.swing.JFrame {
         menorRangoInput.setValue((Integer) 0);
         mayorRangoInput.setValue((Integer) 0);
 
-        data.stopAllThreads();
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(new Object[][] {}, new String[] {"ID", "Operación"}));
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(new Object[][] {}, new String[] {"ID", "OP", "Res"}));
+        jProgressBar1.setValue(0);
+        jSpinner4.setValue(0);
         
     }//GEN-LAST:event_buttonStopMouseClicked
+
+
+    public static void tableToDo(int id, String exp){
+        DefaultTableModel table1 = (DefaultTableModel) GUIFrame.jTable1.getModel();
+        Object row [] = new Object [2];
+        row [0] = id;
+        row [1] = exp;
+        table1.addRow(row);
+        
+    }
+
+    public static void tableDone(int id, String exp, double value){
+        DefaultTableModel table2 =  (DefaultTableModel) GUIFrame.jTable2.getModel();
+        Object row[] = new Object[3];
+        row[0] = id;
+        row[1] = exp;
+        row[2] = value;
+        table2.addRow(row);
+        
+    }
+
+    public static void removeTasks(String exp){
+        DefaultTableModel table1 =  (DefaultTableModel) GUIFrame.jTable1.getModel();  
+         for(int i=table1.getRowCount()-1;i>=0;i--){
+            if(((String)table1.getValueAt(i, 1)).equals(exp)){
+                table1.removeRow(i);
+                break;
+            }
+        }
+    }
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+        // <editor-fold defaultstate="collapsed" desc=" Look and feel setting code
+        // (optional) ">
+        /*
+         * If Nimbus (introduced in Java SE 6) is not available, stay with the default
+         * look and feel. For details see
+         * http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -512,7 +568,7 @@ public class GUIFrame extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(GUIFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
+        // </editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -521,8 +577,6 @@ public class GUIFrame extends javax.swing.JFrame {
             }
         });
     }
-    
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JSpinner bufferSizeField;
@@ -546,8 +600,8 @@ public class GUIFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSpinner jSpinner4;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
+    private static javax.swing.JTable jTable1;
+    private static javax.swing.JTable jTable2;
     private javax.swing.JSpinner mayorRangoInput;
     private javax.swing.JSpinner menorRangoInput;
     private javax.swing.JSpinner msConsumersField;

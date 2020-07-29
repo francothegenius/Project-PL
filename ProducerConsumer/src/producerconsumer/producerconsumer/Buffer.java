@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 public class Buffer {
     
     private Scheme [] buffer;
@@ -38,6 +39,9 @@ public class Buffer {
         }
         product = this.buffer[counterCons];
         this.buffer[counterCons] = null;
+        count--;
+        GUIFrame.removeTasks(product.operation);
+        ProducerConsumer.setValue((int) Math.round((count * 100)/this.bufferSize), id);
         notifyAll();
         return product;
         }
@@ -59,6 +63,9 @@ public class Buffer {
         this.buffer[counterProd] = product;
         product.setID(id);
         id++;
+        count++;
+        GUIFrame.tableToDo(product.ID, product.operation);
+        //ProducerConsumer.setValue(bufferProgress);
         notifyAll();
     }
 
@@ -68,7 +75,7 @@ public class Buffer {
     
     static int count = 1;
     synchronized static void print(String string) {
-        System.out.print(count++ + " ");
+        //System.out.print(count++ + " ");
         System.out.println(string);
     }
     

@@ -27,6 +27,7 @@ public class Consumer extends Thread {
             if(product != null){
                 Scheme.evaluateOP(product);
                 Buffer.print("Consumer consumed -> " + product.getID() + " Result: -> " + product.getResult());
+                GUIFrame.tableDone(product.getID(), product.getOperation(), product.getResult());
             }
             else{
 
